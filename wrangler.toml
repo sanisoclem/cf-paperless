@@ -1,0 +1,14 @@
+name = "cf-paperless"
+main = "build/worker/shim.mjs"
+compatibility_date = "2026-09-01"
+keep_vars = true
+
+[build]
+command = "worker-build --release"
+
+[observability]
+enabled = true
+
+[[r2_buckets]]
+binding = "INBOX"
+bucket_name = "paperless-inbox"
