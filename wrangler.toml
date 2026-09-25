@@ -12,3 +12,6 @@ enabled = true
 [[r2_buckets]]
 binding = "INBOX"
 bucket_name = "paperless-inbox"
+
+[vars]
+ALLOWED_EXTENSIONS = "pdf,jpg,jpeg,tif,tiff,png"
