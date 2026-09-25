@@ -1,6 +1,8 @@
 mod document;
+mod sender;
 
 use document::{Document, Extensions, documents};
+use sender::Senders;
 use worker::wasm_bindgen::JsCast;
 use worker::{Context, Env, ForwardableEmailMessage, HttpMetadata, Result, console_log, event};
 
@@ -17,9 +19,8 @@ async fn email(message: ForwardableEmailMessage, env: Env, _ctx: Context) -> Res
 }
 
 fn is_allowed(message: &ForwardableEmailMessage, env: &Env) -> Result<bool> {
-    let sender = message.from().to_lowercase();
-    let allowed = env.var("ALLOWED_SENDERS")?.to_string().to_lowercase();
-    Ok(allowed.split(',').any(|address| address.trim() == sender))
+    let senders = Senders::parse(&env.var("ALLOWED_SENDERS")?.to_string());
+    Ok(senders.allows(&message.from()))
 }
 
 fn reject(message: &ForwardableEmailMessage) -> Result<()> {
